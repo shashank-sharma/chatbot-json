@@ -9,6 +9,7 @@ def assignment1(request):
 
 
 def assignment2(request):
+    print('yes')
     return render(request, 'assignment2.html', {})
 
 
