@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from . import views
 
 urlpatterns = [
+    url(r'^assignment1/', views.assignment1),
+    url(r'^assignment2/', views.assignment1),
+    url(r'submit-assignment1', views.execute_json_function_1),
     url(r'^admin/', admin.site.urls),
+    url(r'', views.assignment1),
 ]

@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Bot</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+
+<div class="container main-card">
+    <div class="col l6 m12 s12">
+        <div class="row">
+            <div class="col s8 offset-s4 blog-content black-text" style="display: block;">
+                <div class="card horizontal z-depth-4 sign-up-card white-text" id="clone">
+
+                    <!-- Left side of the card -->
+                    {#					<div class="here hide-on-med-and-down">#}
+                    {#						<div class="password-status" style="display: none;">#}
+                    {#							<i class="material-icons large">fingerprint</i>#}
+                    {#							<p class="password-status-text center" style="font-size: 0.8rem"></p>#}
+                    {#						</div>#}
+                    {#						<div class="card-image black-text password-strength"#}
+                    {#							 id="password-indicator" style="width: 350px;max-width: 100%;">#}
+                    {#						</div>#}
+                    {#					</div>#}
+                    <!-- Right side of the card -->
+                    <div class="card-stacked" style="background: #2c2c2c;">
+                        <div class="progress" style="display: none;">
+                            <div class="indeterminate"></div>
+                        </div>
+                        <div class="row" id="scroll-body" style="overflow-y: scroll;margin-left: 0; margin-right: 0;padding: 50px;">
+                            <div class="col s12 message-body">
+                                {#                                <div class="row">#}
+                                {#                                    <div class="left card horizontal blue"#}
+                                {#                                         style="padding: 15px;border-radius: 15px;margin-bottom:0">#}
+                                {#                                        Hey#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                                {#                                <div class="row">#}
+                                {#                                    <div class="right card horizontal blue darken-4"#}
+                                {#                                         style="padding: 15px;border-radius: 15px;margin-bottom:0">#}
+                                {#                                        Hey#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12"
+                                 style="background: #202020;bottom: 0;position:absolute;margin-left: 12px;margin-bottom: 0;width: 99.7%;height: 4rem;">
+                                <input id="last_name" type="text" class="validate response-human"
+                                       placeholder="Your Response" style="border-bottom: 0" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+
+    $.ajax({
+        url: '/submit-assignment1',
+        data: {
+            'count': 0,
+            'response': '',
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        type: 'POST',
+        success: function (data) {
+            for (let i = 0; i < data['instructions'].length; i++) {
+                $(".message-body").append("<div class=\"row\">" +
+                    "                        <div class=\"left card horizontal blue\"" +
+                    "                          style=\"padding: 15px;border-radius: 15px;margin-bottom:0\">" +
+                    data['instructions'][i] +
+                    "                        </div>" +
+                    "                      </div>")
+            }
+        },
+        failure: function (data) {
+            console.log('No')
+        }
+    });
+
+    $(".response-human").on('keyup', function (e) {
+        if (e.keyCode == 13 && $(".response-human").val() !== '') {
+
+            $(".message-body").append("<div class=\"row\">" +
+                "                        <div class=\"right card horizontal blue darken-4\"" +
+                "                          style=\"padding: 15px;border-radius: 15px;margin-bottom:0\">" +
+                $(".response-human").val() +
+                "                        </div>" +
+                "                      </div>").fadeIn(1000);
+
+            $.ajax({
+                url: '/submit-assignment1',
+                data: {
+                    'count': 1,
+                    'response': $(".response-human").val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                type: 'POST',
+                success: function (data) {
+                    for (let i = 0; i < data['instructions'].length; i++) {
+                        $(".message-body").append("<div class=\"row\">" +
+                            "                        <div class=\"left card horizontal blue\"" +
+                            "                          style=\"padding: 15px;border-radius: 15px;margin-bottom:0\">" +
+                            data['instructions'][i] +
+                            "                        </div>" +
+                            "                      </div>")
+                    }
+                    $("#scroll-body").scrollTop($("#scroll-body")[0].scrollHeight);
+                },
+                failure: function (data) {
+                    console.log('No')
+                }
+            });
+             $(".response-human").val('');
+             $("#scroll-body").scrollTop($("#scroll-body")[0].scrollHeight);
+        }
+    });
+</script>
+</body>
+</html>

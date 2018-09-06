@@ -1,0 +1,82 @@
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #ff9800 , #d84315);
+}
+
+input, select, textarea{
+    color: white;
+}
+
+.intro {
+    margin-top: 50px;
+    width: 100%;
+    border-top: 1px solid black;
+    padding-right: 20px;
+}
+.content {
+    padding-left: 1em;
+    display: inline-block;
+}
+.form-group {
+    margin: 1em 0;
+}
+.form-group label {
+    display: inline-block;
+}
+.form-group input {
+    width: 100%;
+}
+
+.main-card {
+    padding-top: 50px;
+}
+
+.password-strength {
+    opacity: .8;
+    width:150px;
+    height:0;
+    transition: height .7s;
+    background: black;
+    transform: rotatex(180deg) translate3d(0, -600px,0);/* the Y-Value shall be higher than the height on hover*/
+    transform-origin: top;
+    bottom: 0;
+}
+
+.password-strength:hover {
+    height: 600px;
+}
+
+.sign-up-card {
+    height: 600px;
+}
+
+.here {
+    background-image: url("http://elchamberlin.info/wp-content/uploads/sunset-and-deer-what-else-do-you-wantac29dc2a4-minimalist-nature-wallpaper.jpg");
+    background-size: 100%;
+}
+
+.card-stacked .progress {
+    position: absolute;
+    background-color: orange;
+    margin: 0;
+}
+
+.password-status {
+    z-index: 999;
+    position : absolute;
+    height : 60%;
+    bottom: 5%;
+    padding-left: 130px;
+}
+
+.info-submit {
+    vertical-align: bottom;
+    padding-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
