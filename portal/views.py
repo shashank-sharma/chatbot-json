@@ -55,11 +55,12 @@ def execute_json_function_1(request):
                         for var in query['instruction_var']:
                             for key in request.session.keys():
                                 if key in var:
+                                    print(key)
                                     exec('%s = %s') % (key, request.session.get(key))
-                                    try:
-                                        query_instruction = query_instruction.replace('%s', request.session.get(key), 1)
-                                    except:
-                                        query_instruction = query_instruction.replace('%s', str(eval(key)), 1)
+                                    query_instruction = query_instruction.replace('%s', request.session.get(key), 1)
+                                else:
+                                    print(key)
+                                    query_instruction = query_instruction.replace('%s', str(eval(var)), 1)
                 else:
                     for var in query['instruction_var']:
                         query_instruction = query_instruction.replace('%s', request.session.get(var), 1)
@@ -116,7 +117,7 @@ def execute_json_function_1(request):
 
 # Just 1 hack
 
-def execute_json_function_1(request):
+def execute_json_function_2(request):
     request.session.modified = True
     print('yes,', request.session.keys())
     for key in request.session.keys():
